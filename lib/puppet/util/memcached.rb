@@ -18,16 +18,15 @@ module Puppet::Util::Memcached
   end
 
   def memcache_key(request)
+    config_version = request.environment.known_resource_types.version
     # We do our own namespacing, because we know more than the memcache client
     # does about the different types of input we might have.
-    "puppet@#{request.indirection_name}@#{request.uri}"
+    "puppet@@#{config_version}@#{request.indirection_name}@#{request.uri}"
   end
 
   def memcache_get(request)
     key    = memcache_key(request)
-    p key
     result = memcache.get(key)
-    p result
 
     if result then
       # We should probably assert the right document type, not just a known
@@ -37,8 +36,6 @@ module Puppet::Util::Memcached
         return decoder.from_pson(envelope['data'])
       end
     end
-
-    Puppet.warning "past result testing"
 
     # Couldn't decode it, or whatever.  We got here, so we want to get it,
     # encode it, and store it before we return.
