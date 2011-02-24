@@ -1,7 +1,4 @@
-Specs
-=====
-
-The Puppet project uses RSpec for testing.
-
-For more information on RSpec, see http://rspec.info/
-
+Puppet Memcached
+================
+Prototype integration with memcached.  This is purely for demonstration
+purposes and should not be used in production, I bet.
