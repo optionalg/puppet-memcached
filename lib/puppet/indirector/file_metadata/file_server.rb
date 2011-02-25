@@ -1,12 +1,10 @@
-# -*- coding: utf-8 -*-
 require 'puppet/file_serving/metadata'
 require 'puppet/indirector/file_metadata'
-require 'puppet/indirector/rest'
-
+require 'puppet/indirector/file_server'
 require 'puppet/util/memcached'
 
-class Puppet::Indirector::FileMetadata::Rest < Puppet::Indirector::REST
-  desc "Retrieve file metadata via a REST HTTP interface, with memcached caching."
+class Puppet::Indirector::FileMetadata::FileServer < Puppet::Indirector::FileServer
+  desc "Retrieve file metadata using Puppet's fileserver."
   include Puppet::Util::Memcached
 
   def initialize(*args)

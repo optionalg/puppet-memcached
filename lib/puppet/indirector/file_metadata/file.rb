@@ -3,11 +3,13 @@ require 'puppet/file_serving/metadata'
 require 'puppet/indirector/file_metadata'
 require 'puppet/indirector/direct_file_server'
 
+require 'puppet/util/memcached'
+
 class Puppet::Indirector::FileMetadata::File < Puppet::Indirector::DirectFileServer
   desc "Retrieve file metadata via the local file system."
+  include Puppet::Util::Memcached
 
   def find(request)
-    puts "Finding #{request} in file"
     # This is a cheap way around otherwise needing to patch the code; the
     # original is actually an empty class, so we are pretty much safe down
     # here doing this.
