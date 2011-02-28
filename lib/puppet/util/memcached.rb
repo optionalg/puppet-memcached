@@ -26,7 +26,12 @@ module Puppet::Util::Memcached
 
   def memcache_get(request)
     key    = memcache_key(request)
-    result = memcache.get(key)
+
+    begin
+      result = memcache.get(key)
+    rescue => detail
+      raise "Could not get #{key} from memcache: #{detail}"
+    end
 
     if result then
       # We should probably assert the right document type, not just a known
@@ -44,7 +49,11 @@ module Puppet::Util::Memcached
     # key, value, TTL, options – raw means "don't mashall", which given that
     # has a habit of both changing between versions, and corrupting random
     # memory on invalid input, isn't really safe to use here.
-    memcache.set(key, value.to_pson, nil, :raw => true)
+    begin
+      memcache.set(key, value.to_pson, nil, :raw => true)
+    rescue => detail
+      raise "Could not set #{key} in memcache: #{detail}"
+    end
 
     # Return that value, then.
     value
