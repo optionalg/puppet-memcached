@@ -33,7 +33,8 @@ module Puppet::Util::Memcached
       raise "Could not get #{key} from memcache: #{detail}"
     end
 
-    if result then
+    if result
+      Puppet.info "Cached data found for #{key}"
       # We should probably assert the right document type, not just a known
       # one.  Oh, well, this will do...
       envelope = PSON.parse(result)
@@ -54,6 +55,7 @@ module Puppet::Util::Memcached
     rescue => detail
       raise "Could not set #{key} in memcache: #{detail}"
     end
+    Puppet.info "Cache created for #{key}"
 
     # Return that value, then.
     value
