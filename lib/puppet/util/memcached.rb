@@ -21,7 +21,7 @@ module Puppet::Util::Memcached
     config_version = request.environment.known_resource_types.version
     # We do our own namespacing, because we know more than the memcache client
     # does about the different types of input we might have.
-    "puppet@@#{config_version}@#{request.indirection_name}@#{request.uri}"
+    "puppet@#{request.environment.to_s}@#{config_version}@#{request.indirection_name}@#{request.key}"
   end
 
   def memcache_get(request)
